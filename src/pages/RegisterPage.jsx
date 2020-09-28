@@ -82,7 +82,7 @@ export default function RegisterPage() {
         onChange={(e) => setEmail(e.target.value)}
       />
       <Input
-        // type="password"
+        type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
