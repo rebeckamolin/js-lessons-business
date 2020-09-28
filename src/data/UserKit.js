@@ -73,12 +73,24 @@ export default class {
       email,
       phoneNumber,
     };
+
     return fetch(url, {
       method: "POST",
       headers: this.getPrivateHeaders(),
       body: JSON.stringify(payload),
     });
   }
+
+  async editCustomer(data, customerId) {
+    const url = `${ROOT_URL}api/v1/customers/${customerId}/`;
+
+    return fetch(url, {
+      method: "PATCH",
+      headers: this.getPrivateHeaders(),
+      body: JSON.stringify(data),
+    });
+  }
+
   async getCustomerList() {
     const url = `${ROOT_URL}api/v1/customers/`;
 
@@ -112,7 +124,7 @@ export default class {
     return localStorage.getItem("BUSINESS_TOKEN");
   }
 
-    logout() {
+  logout() {
     return localStorage.removeItem("BUSINESS_TOKEN");
   }
 

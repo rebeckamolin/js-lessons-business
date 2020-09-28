@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 const Heading = styled.header`
@@ -16,11 +17,16 @@ const Background = styled.div`
   background-color: #fff9fb;
 `;
 
-export default function LayoutSimple({ children }) {
+export default function LayoutSimple() {
+  const history = useHistory();
+
+  function handleGoHome() {
+    history.push("/");
+  }
   return (
     <Background>
       <Heading>
-        <h1>Business Project</h1>
+        <h1 onClick={handleGoHome}>Business Project</h1>
       </Heading>
     </Background>
   );

@@ -6,6 +6,13 @@ import { yupResolver } from "@hookform/resolvers";
 import * as yup from "yup";
 import styled from "styled-components";
 
+/*
+
+This page does now work and is not a part of the project.
+I left it so i could figure out what doesn't work later on.
+
+*/
+
 const Input = styled.input`
   display: grid;
   margin: 8px;
@@ -26,17 +33,12 @@ const Button = styled.button`
   width: 190px;
   text-shadow: 2px 2px 5px black;
   box-shadow: 3px 3px 5px grey;
-  cursor: pointer;
 `;
 
 const H2 = styled.h2`
   color: white;
   text-shadow: 1px 1px 4px black;
   border: black;
-`;
-const P = styled.p`
-  font-size: 12px;
-  color: red;
 `;
 
 export const DetailColumn = styled.span`
@@ -65,112 +67,113 @@ const schema = yup.object().shape({
   phoneNumber: yup.number().integer().required(),
 });
 
-export default function CreateCustomer() {
+export default function EditCustomer({
+  setEditMode,
+  handleCustomerDetails,
+  customerId,
+}) {
   const userKit = new UserKit();
-  const { showCustomerList, setCustomerList } = useContext(CustomerListContext);
+  const { customerList } = useContext(CustomerListContext);
+
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const [name, setName] = useState("");
-  const [organisationNr, setOrganisationNr] = useState("");
-  const [vatNr, setVatNr] = useState("");
-  const [reference, setReference] = useState("");
-  const [paymentTerm, setPaymentTerm] = useState("");
-  const [website, setWebsite] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-
-  function handleNewClient() {
+  const onSubmit = (data) => {
     userKit
-      .createNewClient(
-        name,
-        organisationNr,
-        vatNr,
-        reference,
-        paymentTerm,
-        website,
-        email,
-        phoneNumber
-      )
-      .then(() => {
-        userKit
-          .getCustomerList()
-          .then((res) => res.json())
-          .then((data) => setCustomerList(data.results));
-        showCustomerList();
-      });
-  }
+      .editCustomer(data, customerId)
+      .then(userKit.customerList(customerId))
+      .then(handleCustomerDetails())
+      .then(setEditMode(false));
+  };
+
+  //   function handleNewClient() {
+  //     userKit
+  //       .createNewClient(
+  //         name,
+  //         organisationNr,
+  //         vatNr,
+  //         reference,
+  //         paymentTerm,
+  //         website,
+  //         email,
+  //         phoneNumber
+  //       )
+  //       .then(() => {
+  //         userKit
+  //           .getCustomerList()
+  //           .then((res) => res.json())
+  //           .then((data) => setCustomerList(data.results));
+  //         showCustomerList();
+  //       });
+  //   }
+
+  //   // useEffect(() => {
+  //   //   handleNewClient();
+  //   // }, []);
 
   return (
-    <form onSubmit={handleSubmit(handleNewClient)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <H2>Create New Client</H2>
       <label>Name</label>
       <Input
         placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        DefaultValue={customerList.name}
         ref={register}
       />
-      {errors.name && <P>This is required.</P>}
+      {errors.name && <p>This is required.</p>}
       <label>Organisation number</label>
       <Input
         placeholder="OrganisationNr"
-        value={organisationNr}
-        onChange={(e) => setOrganisationNr(e.target.value)}
+        DefaultValue={customerList.organisationNr}
         ref={register}
       />
-      {errors.organisationNr && <P>This is required.</P>}
+      {errors.organisationNr && <p>This is required.</p>}
       <label>VAT number</label>
+      <span></span>
       <Input
         placeholder="vatNr"
-        value={vatNr}
-        onChange={(e) => setVatNr(e.target.value)}
+        DefaultValue={customerList.namevatNr}
         ref={register}
       />
       {errors.vatNr && (
-        <P>This is required and follow this style SE00000000.</P>
+        <p>This is required and follow this style SE00000000.</p>
       )}
       <label>Reference</label>
       <Input
         placeholder="reference"
-        value={reference}
-        onChange={(e) => setReference(e.target.value)}
+        DefaultValue={customerList.reference}
         ref={register}
       />
-      {errors.reference && <P>This is required.</P>}
+      {errors.reference && <p>This is required.</p>}
       <label>Payment term</label>
       <Input
         placeholder="paymentTerm"
-        value={paymentTerm}
-        onChange={(e) => setPaymentTerm(e.target.value)}
+        DefaultValue={customerList.paymentTerm}
         ref={register}
       />
-      {errors.paymentTerm && <P>This is required.</P>}
+      {errors.paymentTerm && <p>This is required.</p>}
       <label>Website</label>
       <Input
         placeholder="website"
-        value={website}
-        onChange={(e) => setWebsite(e.target.value)}
+        DefaultValue={customerList.website}
         ref={register}
       />
-      {errors.website && <P>This is required.</P>}
+      {errors.website && <p>This is required.</p>}
       <label>Email</label>
       <Input
         placeholder="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        DefaultValue={customerList.email}
         ref={register}
       />
-      {errors.email && <P>This is required.</P>}
+      {errors.email && <p>This is required.</p>}
       <label>Phone number</label>
       <Input
         placeholder="phone number"
-        value={phoneNumber}
-        onChange={(e) => setPhoneNumber(e.target.value)}
+        DefaultValue={customerList.phoneNumber}
         ref={register}
       />
-      {errors.phoneNumber && <P>This is required.</P>}
+      {errors.phoneNumber && <p>This is required.</p>}
       <Button type="submit">Add new client</Button>
     </form>
   );

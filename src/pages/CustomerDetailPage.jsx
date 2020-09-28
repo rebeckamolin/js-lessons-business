@@ -24,6 +24,7 @@ const DeleteButton = styled.button`
   width: 190px;
   text-shadow: 2px 2px 5px black;
   box-shadow: 3px 3px 5px grey;
+  cursor: pointer;
 `;
 
 const EditButton = styled(DeleteButton)`
@@ -39,7 +40,7 @@ const H1 = styled.h1`
 export default function CustomerDetailPage(props) {
   const userKit = new UserKit();
   const [customerDetails, setCustomerDetails] = useState({});
-
+  // const [editMode, setEditMode] = useState(false);
   const customerId = props.match.params.id;
   const history = useHistory();
 
@@ -57,10 +58,7 @@ export default function CustomerDetailPage(props) {
   }, []);
 
   const handleDeleteCustomer = () => {
-    userKit
-      .deleteCustomer(customerId)
-      .then(userKit.getCustomerList())
-      .then(history.push("../home"));
+    userKit.deleteCustomer(customerId).then(history.push("../home"));
   };
 
   return (
@@ -77,7 +75,8 @@ export default function CustomerDetailPage(props) {
         <DeleteButton onClick={handleDeleteCustomer}>
           Delete customer
         </DeleteButton>
-        <EditButton>Edit customer</EditButton>
+        {/* <EditButton onClick={() => editMode(true)}>Edit</EditButton> */}
+        <EditButton>Edit</EditButton>
       </div>
     </Content>
   );

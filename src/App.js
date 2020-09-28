@@ -16,6 +16,7 @@ function App() {
   const userKit = new UserKit();
   const [customerList, setCustomerList] = useState([]);
   const [activeUserInfo, setActiveUserInfo] = useState([]);
+  const [customerDetails, setCustomerDetails] = useState({});
 
   function showCustomerList() {
     userKit
@@ -38,7 +39,7 @@ function App() {
     <div>
       {
         <CustomerListContext.Provider
-          value={{ showCustomerList, customerList, setCustomerList }}
+          value={{ showCustomerList, customerList, setCustomerList, customerDetails, setCustomerDetails }}
         >
           <UserContext.Provider
             value={{ activeUser, activeUserInfo, setActiveUserInfo }}
